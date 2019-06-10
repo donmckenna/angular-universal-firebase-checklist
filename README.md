@@ -1,10 +1,10 @@
-## Angular Universal / Firebase Functions Checklist
+# Angular Universal / Firebase Functions Checklist
 
-#### Motivation
+### Motivation
 Made this as a checklist for myself to remember all the intricate bits of getting Angular Universal to work on a Firebase Hosting server through a Firebase Cloud Function, but I can only assume someone else in the world will be trying to implement their own similar functionality, so here we are.
 
 
-#### Disclaimer
+### Disclaimer
 I take no responsibility if anyone uses this checklist and subsequently screws up their own life. These settings and directories work for my use but there is no guarantee they will work for yours. This is by no means meant to be a comprehensive tutorial, but I hope it can at least bring some pieces together and help someone else not age more rapidly than absolutely necessary.  
 
   - **Notes:**
@@ -14,24 +14,25 @@ I take no responsibility if anyone uses this checklist and subsequently screws u
       It should be the name you chose for your project when first setting up with `ng new`
 
 <br>
+<hr>
 <a id="ng-generate-universal"></a>
 
-#### Generate Universal files 
+### Generate Universal files 
 - In an existing Angular CLI project:  
 `ng generate universal --client-project YOUR_PROJECT_NAME`    
 <br>
 
 
-#### Setup Firebase
+### Setup Firebase
 
-##### Install Firebase Tools
+#### Install Firebase Tools
 - If not already installed:  
   `npm i -g firebase-tools`  
 - Close your terminal and reopen it.
 - Check version with `firebase --version` and compare with the [current version on npm](https://www.npmjs.com/package/firebase-tools)  
 After installing, if the versions don't match, or your version isn't current / hasn't changed, [double check your installation(s) for these potential issues](#troubleshooting-firebase-tools)
 
-##### Initialize Firebase
+#### Initialize Firebase
 - In your project root:  
   `firebase init`  
 - Select both `Functions` and `Hosting` with `[spacebar]`
@@ -51,7 +52,7 @@ After installing, if the versions don't match, or your version isn't current / h
     
 <br>
 
-#### Install additional dependencies
+### Install additional dependencies
 
     @nguniversal/express-engine
     @nguniversal/module-map-ngfactory-loader
@@ -64,7 +65,7 @@ After installing, if the versions don't match, or your version isn't current / h
 <br>
 
 
-#### Copy dependencies to `functions/package.json`
+### Copy dependencies to `functions/package.json`
 
 - The Firebase Hosting server needs all the dependencies we used for our client app to properly render our server-side bundle files.
 - Copy all `dependencies` and `devDependencies` from your root `package.json` to `/functions/package.json`
@@ -77,7 +78,7 @@ After installing, if the versions don't match, or your version isn't current / h
 <br>
 
 
-#### Change a few lines
+### Change a few lines
 
 - `angular.json`  
   - `projects.YOUR_PROJECT_NAME.architect.build.options.outputPath`  
@@ -86,7 +87,6 @@ After installing, if the versions don't match, or your version isn't current / h
   - `projects.YOUR_PROJECT_NAME.architect.server.options.outputPath`  
     change to `"functions/lib"`
 
-<br>
 
 - <a id="firebase-json"></a>
 `firebase.json`  
@@ -100,7 +100,6 @@ After installing, if the versions don't match, or your version isn't current / h
       ```
     [Alternative ways of writing `\"$RESOURCE_DIR\"` can be found here](#troubleshooting-resource-dir) if your `predeploy` isn't firing correctly.
 
-  <br>
 
   - <a id="firebase-json-hosting-public"></a>
     `hosting.public`  
@@ -110,7 +109,7 @@ After installing, if the versions don't match, or your version isn't current / h
       "public": "dist"
     }
     ```
-    <br>
+
 
   - <a id="firebase-json-rewrites"></a>
     `rewrites`  
@@ -134,16 +133,15 @@ After installing, if the versions don't match, or your version isn't current / h
       * (where "ssrApp" is the name of your firebase cloud function)
       ```
 
-<br>
 
 - <a id="functions-package-json"></a>
-`functions/package.json`  
+  `functions/package.json`  
   - This is the `package.json` inside the `/functions` folder Firebase made for you.  
     Make sure `"main"` points to the compiled JavaScript file we'll be rendering to `/functions/lib` :  
     ```
     "main": "lib/index.js"
     ```
-<br>
+
 
 - `app.server.module.ts`
     - Angular creates this file for you when you [`ng generate` a new Universal project](#ng-generate-universal).  
@@ -179,7 +177,7 @@ After installing, if the versions don't match, or your version isn't current / h
 
 
 
-#### Implement Firebase Express Cloud Function
+### Implement Firebase Express Cloud Function
 
 - Some have implemented this step with an npm package, however the code is tolerable enough to include in a few files, so we'll just do that.  
   <!-- Further explanation of this step / chunk / process here.   -->
@@ -198,9 +196,9 @@ After installing, if the versions don't match, or your version isn't current / h
 <br>
 
 
-#### Angular build scripts
+### Angular build scripts
 
-##### Initial understanding
+#### Initial understanding
 
 - We've set our app up to expect and accept the files we will create with these build scripts.  
 We'll go through each command separately, which will give us a better idea of what is going on with the final `build-and-deploy` script.  
@@ -227,7 +225,7 @@ We'll go through each command separately, which will give us a better idea of wh
   firebase deploy
   ```
 
-##### Streamlining future builds
+#### Streamlining future builds
 
 - If we wish to run a build again, we'll have to delete the production build files we rendered in `/dist` and `/functions/lib` before creating new ones.  
   The first step in creating a new build is to clean up the old build.  
@@ -257,7 +255,7 @@ We'll go through each command separately, which will give us a better idea of wh
 <br>
 
 
-#### Troubleshooting Issues
+### Troubleshooting Issues
 
 - <a id="troubleshooting-firebase-tools"></a>
 `firebase-tools` does not update / install new versions.
@@ -284,7 +282,7 @@ We'll go through each command separately, which will give us a better idea of wh
 <br>
 
 
-#### Resources
+### Resources
 There are a lot of hard-working, smart people on the internet with buckets of knowledge to tap into. This "checklist" is not derived from any single resource, but there are a few key resources I used to widen my understanding on the subject.  
 
 Some resources are free, others require payment to deliver a complete package. I've personally paid for some of these resources, do not regret it, and have much respect for the individuals teaching these concepts in depth.
