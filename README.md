@@ -293,9 +293,11 @@ Some resources are free, others require payment to deliver a complete package. I
   [Angular University Course](https://angular-university.io/course/angular-universal-course)
   - Vasco is a knowlegeable and detailed teacher. There are a few outdated pieces to this course, but such is web development, and I regularly reference this course to refresh my understanding.  
 <br>  
+
 - [`fireship.io`](https://fireship.io)  
   [Angular Universal SSR with Firebase ](https://fireship.io/lessons/angular-universal-firebase/)
   - Jeff wonderfully packs large concepts into easily digestible bits. His lessons and clarifications have been invaluable to making sense of this "stack".  
 <br>  
+
 - `Github heros`  
   - There are a mess of random Github issue comments which have helped immensely, however they are strewn about hundreds of browser tabs. I will list them when I find them again.
