@@ -143,22 +143,13 @@ After installing, if the versions don't match, or your version isn't current / h
     ```
 
 
-- `app.server.module.ts`
-    - Angular creates this file for you when you [`ng generate` a new Universal project](#ng-generate-universal).  
-      If we want to use lazy loading, we need to import the `ModuleMapLoaderModule` :  
-      <br>**The new bits:**
-      ```
-      import { ModuleMapLoaderModule } from '@nguniversal/module-map-ngfactory-loader';   <---
-
-      @NgModule({
-        imports: [ ModuleMapLoaderModule ]   <---
-      })
-      ```
-      **The new bits alongside the existing bits:**  
+- `app.module.ts`
+    - Angular creates this file for you when creating a new app `ng new`  
+      If we want to appropriately handle the handoff of the app from the server to the client, we need the `BrowserModule` and `BrowserTransferStateModule` :  
+      `app.module.ts` should look like this:
       ```
       import { NgModule } from '@angular/core';
-      import { ServerModule } from '@angular/platform-server';
-      import { ModuleMapLoaderModule } from '@nguniversal/module-map-ngfactory-loader';   <---
+      import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 
       import { AppModule } from './app.module';
       import { AppComponent } from './app.component';
@@ -166,8 +157,36 @@ After installing, if the versions don't match, or your version isn't current / h
       @NgModule({
         imports: [
           AppModule,
+          BrowserModule.withServerTransition({ appId: 'YOUR_PROJECT_NAME' }),
+          BrowserTransferStateModule,
+        ],
+        bootstrap: [AppComponent],
+      })
+      export class AppModule {}
+      ```
+
+
+- `app.server.module.ts`
+    - Angular creates this file for you when you [`ng generate` a new Universal project](#ng-generate-universal).  
+      If we want to use lazy loading, we need to import the `ModuleMapLoaderModule`  
+      If we want to appropriately handle the handoff of the app from the server to the client, we need the `BrowserModule` and `ServerTransferStateModule` :  
+      `app.server.module.ts` should look like this:
+      ```
+      import { NgModule } from '@angular/core';
+      import { BrowserModule } from '@angular/platform-browser';
+      import { ServerModule, ServerTransferStateModule } from '@angular/platform-server';
+      import { ModuleMapLoaderModule } from '@nguniversal/module-map-ngfactory-loader';
+
+      import { AppModule } from './app.module';
+      import { AppComponent } from './app.component';
+
+      @NgModule({
+        imports: [
+          AppModule,
+          BrowserModule.withServerTransition({ appId: 'YOUR_PROJECT_NAME' }),
           ServerModule,
-          ModuleMapLoaderModule   <---
+          ServerTransferStateModule,
+          ModuleMapLoaderModule
         ],
         bootstrap: [AppComponent],
       })
