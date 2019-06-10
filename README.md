@@ -192,6 +192,19 @@ After installing, if the versions don't match, or your version isn't current / h
       })
       export class AppServerModule {}
       ```
+
+- `app-routing.module.ts`
+    - If your app "flickers" when the server hands off the app to the client, adding this to your `AppRoutingModule` may help:
+      ```
+      @NgModule({
+        imports: [
+          RouterModule.forRoot([ /* your routes */ ], {
+            initialNavigation: 'enabled'
+          })
+        ]
+      })
+      export class AppRoutingModule {}
+      ```
 <br>
 
 
